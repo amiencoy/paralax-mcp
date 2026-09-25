@@ -1,0 +1,9 @@
+{
+  "version": "parabiont-candidate/v0.1",
+  "items": [
+    {"id": "architecture", "kind": "decision", "topic": "paralax", "labels": ["technical"], "text": "PARALAX orchestrates provider-independent agents. Parabiont carries task context. Axionorm authors and enforces YAML policies, using OPA for context and tool decisions."},
+    {"id": "continuity", "kind": "task", "topic": "parabiont", "labels": ["technical"], "text": "Implement cross-model continuity from a user-reviewed ChatGPT project brief to a local Gemini agent through A2A. Preserve task state, decisions, open questions, provenance and scoped lease semantics."},
+    {"id": "desktop", "kind": "decision", "topic": "paralax", "labels": ["technical"], "text": "Use an existing desktop interface with Gemini CLI and a plug-in MCP gateway. Authenticate through the official CLI. Treat account entitlements as a runtime capability check."},
+    {"id": "privacy", "kind": "constraint", "topic": "axionorm", "labels": ["technical"], "text": "Transfer only approved technical project context. Default-deny all unrelated context and capabilities. Keep policy and review credentials outside model-writable directories."}
+  ]
+}

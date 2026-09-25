@@ -1,0 +1,28 @@
+name: Reference integration
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: paralax-mcp
+      - uses: actions/checkout@v4
+        with:
+          repository: amiencoy/axionorm
+          ref: v0.1.0
+          path: axionorm
+      - uses: actions/checkout@v4
+        with:
+          repository: amiencoy/parabiont-protocol
+          ref: v0.1.0
+          path: parabiont-protocol
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -c paralax-mcp/constraints-tested.txt ./axionorm ./parabiont-protocol ./paralax-mcp pytest
+      - run: axionorm install-opa --directory axionorm/.runtime/opa
+      - run: python -m pytest axionorm/tests parabiont-protocol/tests paralax-mcp/tests -q
+      - run: python paralax-mcp/examples/demo.py --directory demo-runtime --policy axionorm/examples/technical-review.yaml --opa axionorm/.runtime/opa/opa
