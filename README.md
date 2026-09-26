@@ -18,6 +18,18 @@ python3 install.py --directory "$HOME/paralax" --gemini-cli
 
 The installer creates a virtual environment, checks out tagged versions of all three repos, applies tested dependency constraints, and installs checksum-verified OPA in `runtime/opa`. It refuses to overwrite existing repositories. Omit `--gemini-cli` to maintain that CLI separately.
 
+
+### WSL2 bootstrap
+
+For a first-time WSL2 setup, the repository includes a wrapper that checks prerequisites, runs the combined installer, verifies the local A2A-to-MCP demo, and prepares `runtime/candidate.json`. It does not perform Google login or create private keys.
+
+```bash
+chmod +x scripts/bootstrap-wsl.sh
+./scripts/bootstrap-wsl.sh
+```
+
+Set `PARALAX_INSTALL_DIR` before running to override the default installation location. It must be a fresh directory.
+
 Follow [desktop setup and handoff](docs/DESKTOP.md) and [architecture/limits](docs/ARCHITECTURE.md).
 
 ## Local demo
