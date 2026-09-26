@@ -24,6 +24,8 @@ The installer creates a virtual environment, checks out tagged versions of all t
 For a first-time WSL2 setup, the repository includes a wrapper that checks prerequisites, runs the combined installer, verifies the local A2A-to-MCP demo, and prepares `runtime/candidate.json`. It does not perform Google login or create private keys.
 
 ```bash
+git clone https://github.com/amiencoy/paralax-mcp.git
+cd paralax-mcp
 chmod +x scripts/bootstrap-wsl.sh
 ./scripts/bootstrap-wsl.sh
 ```
