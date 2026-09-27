@@ -1,7 +1,8 @@
 """Install the three reference packages into one isolated directory (Python 3.11+)."""
 import argparse
 import os
-import subprocess
+# Fixed argv invocations are used without a shell.
+import subprocess  # nosec B404
 import sys
 import venv
 from pathlib import Path
@@ -20,7 +21,7 @@ def main():
     root = Path(a.directory).expanduser().resolve()
     root.mkdir(parents=True, exist_ok=True)
     repositories = []
-    versions = {"axionorm": "v0.1.0", "parabiont-protocol": "v0.1.1", "paralax-mcp": "v0.1.1"}
+    versions = {"axionorm": "v0.1.0", "parabiont-protocol": "v0.1.2", "paralax-mcp": "v0.1.2"}
     for name, version in versions.items():
         dest = root / "repos" / name
         if dest.exists():

@@ -4,14 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "paralax-mcp"
-version = "0.1.1"
+version = "0.1.2"
 description = "Policy-gated MCP workspace tools and Gemini desktop setup"
 requires-python = ">=3.11"
-dependencies = ["axionorm>=0.1,<0.2", "parabiont-protocol>=0.1,<0.2", "mcp==1.30.0"]
+dependencies = ["axionorm>=0.1,<0.2", "parabiont-protocol>=0.1,<0.2", "jsonschema>=4.26,<5", "mcp==1.30.0"]
 
 [project.scripts]
 paralax-mcp = "paralax_mcp.server:main"
 paralax-setup = "paralax_mcp.setup:main"
+paralax-delta = "paralax_mcp.delta:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+paralax_mcp = ["schemas/*.json"]

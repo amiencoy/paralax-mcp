@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-PARALAX_VERSION="v0.1.1"
+PARALAX_VERSION="v0.1.2"
 PARALAX_INSTALL_DIR="${PARALAX_INSTALL_DIR:-$HOME/paralax-v0.1}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPOSITORY_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"

@@ -4,14 +4,14 @@ Policy-gated MCP tools and desktop integration for [Axionorm](https://github.com
 
 ## Status
 
-Experimental v0.1.1. The local OPA → signed A2A → MCP flow works without a model subscription. Gemini CLI/AionUi configuration is generated for installation; live login, entitlement and desktop behavior must be checked on the user's machine. This is an initial PARALAX integration, not the full multi-agent orchestrator.
+Experimental v0.1.2. The local OPA → signed A2A → MCP flow and the quarantined MCP → context-delta → Axionorm return path work without automatic memory promotion. Gemini CLI/AionUi configuration is generated for installation; live login, entitlement and desktop behavior must be checked on the user's machine. This is an initial PARALAX integration, not the full multi-agent orchestrator.
 
 ## Install
 
 Requirements: Python 3.11+, Git, Linux/macOS/WSL2 for the filesystem gateway; Node.js 20+ and npm for Gemini CLI. Install AionUi separately from its official releases.
 
 ```bash
-git clone --branch v0.1.1 https://github.com/amiencoy/paralax-mcp.git
+git clone --branch v0.1.2 https://github.com/amiencoy/paralax-mcp.git
 cd paralax-mcp
 python3 install.py --directory "$HOME/paralax" --gemini-cli
 ```
@@ -32,7 +32,7 @@ chmod +x scripts/bootstrap-wsl.sh
 
 Set `PARALAX_INSTALL_DIR` before running to override the default installation location. It must be a fresh directory.
 
-Follow [desktop setup and handoff](docs/DESKTOP.md) and [architecture/limits](docs/ARCHITECTURE.md).
+Follow [installation and round-trip flow](docs/INSTALLATION.md), [desktop setup and handoff](docs/DESKTOP.md), and [architecture/limits](docs/ARCHITECTURE.md).
 
 ## Local demo
 
@@ -55,9 +55,27 @@ A real local HTTP A2A receiver and MCP stdio client verify that approved state r
 
 No shell, package installer, unrestricted browser or arbitrary filesystem tool is exposed. Denied tools are omitted from discovery and checked again during execution. Skills are advisory and cannot grant capabilities. MCP is provider-agnostic; the generated desktop launcher is Gemini-specific.
 
+## Governed return path
+
+Model-written deltas remain quarantined. Validate a proposal first, then create a non-promoting review bundle:
+
+```bash
+paralax-delta validate artifacts/context-delta-YYYYMMDD-HHMMSS.json
+
+paralax-delta review artifacts/context-delta-YYYYMMDD-HHMMSS.json \
+  --policy runtime/policy.yaml \
+  --opa runtime/opa/opa \
+  --output artifacts/review-YYYYMMDD-HHMMSS \
+  --approve item-1 item-2
+```
+
+`review` writes a create-only bundle containing the byte-preserved source delta, an Axionorm candidate, provenance mapping, digest review, and per-item policy diagnostics. It never issues a capsule, changes a bond, or promotes memory. `--approve-all` is available for an operator-reviewed test fixture. `--add-label technical` records an explicit adapter transformation when an active Axionorm v0.1 policy requires that label.
+
 ## Development
 
-Clone the repos as siblings. In one environment: `python -m pip install ../axionorm ../parabiont-protocol . pytest`. Install OPA, then run `python -m pytest tests -q`. `AXIONORM_POLICY` and `OPA_BINARY` override sibling defaults. Fixtures contain no personal history or credentials.
+Clone the repos as siblings. In one environment: `python -m pip install ../axionorm ../parabiont-protocol . pytest`. Install OPA, then run `python -m pytest tests -q`. `AXIONORM_POLICY` and `OPA_BINARY` override sibling defaults. The suite includes a real MCP stdio round trip through `context_read`, `workspace_write`, delta validation, provenance preservation, Axionorm review, and OPA diagnostics. Fixtures contain no personal history or credentials.
+
+See [the development report](docs/DEVELOPMENT-REPORT.md) for the verified flow, observed failures, and Fleet-facing gaps.
 
 ## Licensing
 
