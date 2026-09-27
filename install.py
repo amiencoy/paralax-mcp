@@ -9,7 +9,8 @@ from pathlib import Path
 
 
 def run(*args):
-    subprocess.run([str(a) for a in args], check=True)
+    # All callers provide fixed executables/arguments; no shell or command string is evaluated.
+    subprocess.run([str(a) for a in args], check=True)  # nosec B603
 
 
 def main():

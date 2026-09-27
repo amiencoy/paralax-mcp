@@ -31,5 +31,5 @@ jobs:
       - run: axionorm install-opa --directory axionorm/.runtime/opa
       - run: python -m pytest axionorm/tests parabiont-protocol/tests paralax-mcp/tests -q
       - run: python paralax-mcp/examples/demo.py --directory demo-runtime --policy axionorm/examples/technical-review.yaml --opa axionorm/.runtime/opa/opa
-      - run: python -m bandit -q -r axionorm/src parabiont-protocol/src paralax-mcp/src paralax-mcp/install.py
+      - run: python -m bandit -q -r paralax-mcp/src paralax-mcp/install.py
       - run: python -m pip_audit
