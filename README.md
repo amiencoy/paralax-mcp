@@ -4,14 +4,14 @@ Policy-gated MCP tools and desktop integration for [Axionorm](https://github.com
 
 ## Status
 
-Experimental v0.1.0. The local OPA → signed A2A → MCP flow works without a model subscription. Gemini CLI/AionUi configuration is generated for installation; live login, entitlement and desktop behavior must be checked on the user's machine. This is an initial PARALAX integration, not the full multi-agent orchestrator.
+Experimental v0.1.1. The local OPA → signed A2A → MCP flow works without a model subscription. Gemini CLI/AionUi configuration is generated for installation; live login, entitlement and desktop behavior must be checked on the user's machine. This is an initial PARALAX integration, not the full multi-agent orchestrator.
 
 ## Install
 
 Requirements: Python 3.11+, Git, Linux/macOS/WSL2 for the filesystem gateway; Node.js 20+ and npm for Gemini CLI. Install AionUi separately from its official releases.
 
 ```bash
-git clone --branch v0.1.0 https://github.com/amiencoy/paralax-mcp.git
+git clone --branch v0.1.1 https://github.com/amiencoy/paralax-mcp.git
 cd paralax-mcp
 python3 install.py --directory "$HOME/paralax" --gemini-cli
 ```

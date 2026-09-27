@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: amiencoy/axionorm
-          ref: v0.1.0
+          ref: v0.1.1
           path: axionorm
       - uses: actions/checkout@v4
         with:
@@ -22,7 +22,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install -c paralax-mcp/constraints-tested.txt ./axionorm ./parabiont-protocol ./paralax-mcp pytest
+      - run: python -m pip install --upgrade -c paralax-mcp/constraints-tested.txt pip
+      - run: python -m pip install -c paralax-mcp/constraints-tested.txt ./axionorm ./parabiont-protocol ./paralax-mcp pytest pip-audit
       - run: axionorm install-opa --directory axionorm/.runtime/opa
       - run: python -m pytest axionorm/tests parabiont-protocol/tests paralax-mcp/tests -q
       - run: python paralax-mcp/examples/demo.py --directory demo-runtime --policy axionorm/examples/technical-review.yaml --opa axionorm/.runtime/opa/opa
+      - run: python -m pip_audit

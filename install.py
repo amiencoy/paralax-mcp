@@ -20,18 +20,22 @@ def main():
     root = Path(a.directory).expanduser().resolve()
     root.mkdir(parents=True, exist_ok=True)
     repositories = []
-    for name in ("axionorm", "parabiont-protocol", "paralax-mcp"):
+    versions = {"axionorm": "v0.1.0", "parabiont-protocol": "v0.1.1", "paralax-mcp": "v0.1.1"}
+    for name, version in versions.items():
         dest = root / "repos" / name
         if dest.exists():
             p.error(f"Refusing to overwrite {dest}; choose a fresh installation directory")
         dest.parent.mkdir(parents=True, exist_ok=True)
-        run("git", "clone", "--depth", "1", "--branch", "v0.1.0", f"https://github.com/amiencoy/{name}.git", dest)
+        run("git", "clone", "--depth", "1", "--branch", version, f"https://github.com/amiencoy/{name}.git", dest)
         repositories.append(dest)
     env = root / "venv"
     venv.EnvBuilder(with_pip=True).create(env)
     binary = env / ("Scripts" if os.name == "nt" else "bin")
     python = binary / ("python.exe" if os.name == "nt" else "python")
-    run(python, "-m", "pip", "install", "--constraint", repositories[2] / "constraints-tested.txt", *repositories)
+    constraints = repositories[2] / "constraints-tested.txt"
+    # A new venv may inherit an old bundled pip; upgrade it before resolving packages.
+    run(python, "-m", "pip", "install", "--upgrade", "--constraint", constraints, "pip")
+    run(python, "-m", "pip", "install", "--constraint", constraints, *repositories)
     axionorm = binary / ("axionorm.exe" if os.name == "nt" else "axionorm")
     run(axionorm, "install-opa", "--directory", root / "runtime/opa")
     for name in ("runtime", "exports", "artifacts"):

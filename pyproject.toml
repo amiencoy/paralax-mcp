@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "paralax-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Policy-gated MCP workspace tools and Gemini desktop setup"
 requires-python = ">=3.11"
 dependencies = ["axionorm>=0.1,<0.2", "parabiont-protocol>=0.1,<0.2", "mcp==1.30.0"]
