@@ -27,7 +27,7 @@ def sha256(data):
 
 
 def bundled_schema():
-    resource = files("paralax_mcp").joinpath("schemas/context-delta.schema.json")
+    resource = files("parabiont").joinpath("schemas/context-delta.v0.1.json")
     return json.loads(resource.read_text(encoding="utf-8"))
 
 
@@ -106,7 +106,9 @@ def policy_diagnostics(engine, candidate, review):
             "kind_allowed": item["kind"] in engine.policy["context"]["kinds"],
             "denied_labels_clear": not bool(denied_labels.intersection(item["labels"])),
             "within_text_limit": len(item["text"]) <= engine.policy["context"]["max_item_chars"],
-            "technical_label_present": "technical" in item["labels"],
+            "required_labels_present": all(
+                label in item["labels"] for label in engine.policy["context"]["required_labels"]
+            ),
         }
         reasons = [name for name, passed in checks.items() if not passed]
         if not allowed and not reasons:

@@ -43,6 +43,16 @@ def config(tmp_path, request):
 
 def test_read_and_scope(config):
     gateway = Gateway(config)
+    description = gateway.describe()
+    assert description["version"] == "paralax-gateway/v0.1"
+    assert description["policy"]["context"]["required_labels"] == ["technical"]
+    assert {rule["name"] for rule in description["policy"]["tools"]} == {
+        "gateway_describe", "context_read", "workspace_list", "workspace_read"
+    }
+    serialized = json.dumps(description)
+    for key in ("workspace", "output", "store", "manifest", "opa", "policy"):
+        assert str(config[key]) not in serialized
+    assert description["return_path"]["authoritative_promotion"] is False
     assert gateway.workspace_list() == ["project.md"]
     assert gateway.workspace_read("project.md") == "A safe project brief."
     for path in ("../manifest.json", "private.md", "/etc/passwd", ".env"):
@@ -85,7 +95,11 @@ def test_actual_stdio_mcp(config, tmp_path):
             async with ClientSession(read, write) as session:
                 await session.initialize()
                 available = await session.list_tools()
-                assert {t.name for t in available.tools} == {"context_read", "workspace_list", "workspace_read"}
+                assert {t.name for t in available.tools} == {
+                    "gateway_describe", "context_read", "workspace_list", "workspace_read"
+                }
+                description = await session.call_tool("gateway_describe", {})
+                assert not description.isError
                 context = await session.call_tool("context_read", {})
                 assert not context.isError
                 result = await session.call_tool("workspace_read", {"name": "project.md"})

@@ -30,6 +30,28 @@ class Gateway:
             raise PolicyDenied("Invalid workspace manifest")
         return value["files"]
 
+    def describe(self):
+        """Describe the effective, policy-gated contract without exposing host paths."""
+        engine, capsule = self.authority()
+        result = {
+            "version": "paralax-gateway/v0.1",
+            "bond": {
+                "bond_id": capsule["bond_id"],
+                "audience": capsule["audience"],
+                "purpose": capsule["purpose"],
+                "expires_at": capsule["expires_at"],
+                "policy_digest": capsule["policy_digest"],
+            },
+            "policy": engine.effective_contract(),
+            "return_path": {
+                "schema": "parabiont-delta/v0.1",
+                "trust": "untrusted-proposal",
+                "authoritative_promotion": False,
+            },
+        }
+        engine.authorize_tool("gateway_describe", size=len(json.dumps(result).encode()), scope_valid=True)
+        return result
+
     @staticmethod
     def safe_name(name):
         return bool(re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_.-]{0,100}", name)) and ".." not in name

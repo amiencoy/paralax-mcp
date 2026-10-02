@@ -20,7 +20,7 @@ flowchart TD
 
 OPA evaluates two policy domains. Axionorm normalizes policy/input, checks review/content, projects the permitted context and enforces decisions. Parabiont carries already-filtered context: raw private history never travels to the destination before being 'intercepted'. PARALAX's initial orchestration connects review → seal → deliver → tool access → quarantined return proposal → review. The dashed promotion edge is intentionally not automated.
 
-`paralax-delta` is the boundary adapter between the richer `parabiont-delta/v0.1` proposal and Axionorm's narrower `parabiont-candidate/v0.1` review input. It preserves the exact source bytes and SHA-256, records per-item provenance/confidence/supersedes fields, records every explicitly added label, and emits the candidate/review/policy digests needed to audit the transformation.
+`paralax-delta` is the boundary adapter between the richer `parabiont-delta/v0.1` proposal, whose schema is owned by the Parabiont package, and Axionorm's narrower `parabiont-candidate/v0.1` review input. It preserves the exact source bytes and SHA-256, records per-item provenance/confidence/supersedes fields, records every explicitly added label, and emits the candidate/review/policy digests needed to audit the transformation.
 
 The source adapter accepts a curated JSON candidate; it cannot automatically read ChatGPT's hidden memory or act as the consumer app's native A2A endpoint. The destination is a local receiver; Google sees state only when the authenticated Gemini runtime requests it through MCP. A2A is pinned to 0.3, MCP to the official Python SDK 1.30.0; no latest-version or full-standard certification is claimed.
 
@@ -38,4 +38,6 @@ The source adapter accepts a curated JSON candidate; it cannot automatically rea
 
 No remote A2A authentication/TLS deployment, native ChatGPT integration, automatic subscription reuse, cloud browser, unrestricted shell, provider API call, full AI Council scheduler, distributed revocation or remote forgetting. The user installs/authenticates the desktop runtime. The combined installer and local demo are usable without any provider login.
 
-Future work should first turn the verified local return adapter into a version-negotiated promotion controller, expose effective Rego requirements through a machine-readable policy contract, measure policy latency, and add package-specific installer approvals and narrowly scoped task runners. Preserve the same purpose/audience/data boundaries when adding another provider.
+`gateway_describe` exposes a machine-readable, policy-gated contract for Fleet discovery: protocol version, active lease, policy digest, explicit context requirements, allowed tools, and the non-promoting return schema. It deliberately excludes host paths, store locations, keys, and denied tools.
+
+Future work should next turn the verified local return adapter into a version-negotiated promotion controller, measure policy latency, and add package-specific installer approvals and narrowly scoped task runners. Preserve the same purpose/audience/data boundaries when adding another provider.

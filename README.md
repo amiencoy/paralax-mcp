@@ -48,6 +48,7 @@ A real local HTTP A2A receiver and MCP stdio client verify that approved state r
 
 | Tool | Behavior |
 | --- | --- |
+| `gateway_describe` | Announces the active bond, effective policy requirements, protocol version and allowed capabilities without host paths |
 | `context_read` | Checks policy, expiry and revocation on every read |
 | `workspace_list` | Lists explicitly approved exported filenames |
 | `workspace_read` | Reads a regular non-symlink file with matching reviewed digest; scans output |
@@ -57,7 +58,7 @@ No shell, package installer, unrestricted browser or arbitrary filesystem tool i
 
 ## Governed return path
 
-Model-written deltas remain quarantined. Validate a proposal first, then create a non-promoting review bundle:
+Model-written deltas remain quarantined. PARALAX validates them against the proposal schema owned and packaged by Parabiont Protocol. Validate a proposal first, then create a non-promoting review bundle:
 
 ```bash
 paralax-delta validate artifacts/context-delta-YYYYMMDD-HHMMSS.json

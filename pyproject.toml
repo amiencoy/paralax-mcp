@@ -16,6 +16,3 @@ paralax-delta = "paralax_mcp.delta:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-paralax_mcp = ["schemas/*.json"]

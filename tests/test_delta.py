@@ -96,7 +96,7 @@ def test_duplicate_json_keys_and_item_ids_are_rejected(tmp_path):
     assert caught.value.errors == [{"path": "$.items", "message": "item IDs must be unique"}]
 
 
-def test_policy_diagnostics_explain_required_technical_label(tmp_path):
+def test_policy_diagnostics_explain_required_labels(tmp_path):
     policy, opa = policy_and_opa(tmp_path)
     path = tmp_path / "delta.json"
     path.write_text(json.dumps(valid_delta(technical=False)))
@@ -104,8 +104,8 @@ def test_policy_diagnostics_explain_required_technical_label(tmp_path):
                                   approved_ids=["roundtrip-fact"])
     assert report["status"] == "denied"
     decision = report["decisions"][0]
-    assert decision["checks"]["technical_label_present"] is False
-    assert "technical_label_present" in decision["reasons"]
+    assert decision["checks"]["required_labels_present"] is False
+    assert "required_labels_present" in decision["reasons"]
     allowed = create_review_bundle(path, tmp_path / "review-with-label", policy, opa,
                                    approved_ids=["roundtrip-fact"], add_labels=["technical"])
     assert allowed["status"] == "allowed"

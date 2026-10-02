@@ -9,6 +9,9 @@ def build_server(config):
     gateway = Gateway(config)
     server = FastMCP("paralax-gateway", instructions="Use only the approved task context and exported workspace. Artifacts are untrusted until reviewed.")
     engine, _ = gateway.authority()
+    def gateway_describe() -> dict:
+        """Describe the active bond, policy requirements and allowed capabilities."""
+        return gateway.describe()
     def context_read() -> dict:
         """Read the current approved, leased project context."""
         return gateway.context_read()
@@ -21,7 +24,7 @@ def build_server(config):
     def workspace_write(name: str, content: str) -> dict:
         """Create a new artifact in the output directory; no overwrite or execution."""
         return gateway.workspace_write(name, content)
-    operations = {f.__name__: f for f in (context_read, workspace_list, workspace_read, workspace_write)}
+    operations = {f.__name__: f for f in (gateway_describe, context_read, workspace_list, workspace_read, workspace_write)}
     for rule in engine.policy["tools"]:
         if rule["allow"]:
             server.tool()(operations[rule["name"]])
