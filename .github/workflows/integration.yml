@@ -16,12 +16,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: amiencoy/axionorm
-          ref: v0.1.0
+          ref: c3eb8fcfa4c608c5f4a91c95714c2df2df79cb3e
           path: axionorm
       - uses: actions/checkout@v4
         with:
           repository: amiencoy/parabiont-protocol
-          ref: v0.1.2
+          ref: 98f4d35813f275ab1b12000de5a80ff99e632f54
           path: parabiont-protocol
       - uses: actions/setup-python@v5
         with:
